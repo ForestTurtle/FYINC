@@ -22,10 +22,28 @@ class Reminder
 		$this->time = $time;
 	}
 
-	function display()
+	function display($i)
 	{
-		echo "To: ".$this->recipient."<br/>";
-		echo "At: ".$this->time."<br/>";
+		$email = $this->recipient;
+		$time = $this->time;
+	?>
+		<div class="reminder">
+			Send to
+			<a href="mailto:<?php echo $email ?>?Subject=Notification">
+			<?php echo $email ?></a>
+				at <?php echo $this->time ?>.
+			<form method = 'POST'>
+				<input type='submit' value='Delete Reminder'>
+				<input type='hidden' name='action' value = 'delete'>
+				<input type='hidden' name='action2' value = '<?php echo $i ?>'>
+			</form>
+			<form method = 'POST'>
+				<input type='submit' value='Edit Reminder'>
+				<input type='hidden' name='action3' value = 'edit'>
+				<input type='hidden' name='action4' value = '<?php echo $i ?>'>
+			</form>
+		</div>
+	<?php
 	}
 
 }
@@ -36,7 +54,6 @@ class ReminderList
 
 	function displayList()
 	{
-	
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){//Remove Reminder
 			if(isset($_POST['action']) && $_POST['action'] == "delete"){ //delete is pressed
@@ -53,20 +70,12 @@ class ReminderList
 		}
 		for ($i = 0; $i < count($this->reminders); $i++) //display del and edit buttons
 		{
-			$this->reminders[$i]->display();
-			echo "<form method = 'POST'>";
-			echo "<input type='submit' value='Delete Reminder'>";
-			echo "<input type='hidden' name='action' value = 'delete'>";
-			echo "<input type='hidden' name='action2' value = '$i'>";
-			echo "</form>";		
-			echo "<form method = 'POST'>";
-			echo "<input type='submit' value='Edit Reminder'>";
-			echo "<input type='hidden' name='action3' value = 'edit'>";
-			echo "<input type='hidden' name='action4' value = '$i'>";
-			echo "</form>";
+			$this->reminders[$i]->display($i);
 			
-			if($_SERVER["REQUEST_METHOD"] == "POST"){
-				if(isset($_POST['action3']) && $_POST['action3'] == "edit" && $_POST['action4'] == $i){ //edit is pressed
+			if($_SERVER["REQUEST_METHOD"] == "POST" &&
+				isset($_POST['action3']) &&
+				$_POST['action3'] == $i)
+			{
 					echo "<form  method='post'>";
 					echo "<input type='text' name = 'recipient' value='Recipient Email'>";
 					echo "<input type='text' name = 'time' value='Time to Email'>";
@@ -74,7 +83,6 @@ class ReminderList
 					echo "<input type='hidden' name='action5' value='add3'>";
 					echo "<input type='hidden' name='action6' value='".$_POST['action4']."'>";
 					echo "</form>";
-				}
 			}
 		}
 	}
@@ -114,27 +122,20 @@ function get_input($data) //get input from text form
 
 function sendMessage($recipient)
 {
-
-print_r($mandrill->messages->sendTemplate($name, $template_content, $message));
-
+	print_r($mandrill->messages->sendTemplate($name, $template_content, $message));
 }
 
 function  save(){
-	//if (isset($_POST['action']) && $_POST['action'] == "save") {//if save is pressed
-		$file = fopen("cache.txt", "w");
-		fputs($file, session_encode());//save test
-		fclose($file);
-		echo "Saved Test</br>";
-	//}
+	$file = fopen("cache.txt", "w");
+	fputs($file, session_encode());//save test
+	fclose($file);
+	echo "Saved Test</br>";
 }
+
 function load(){
-	//if (isset($_POST['action']) && $_POST['action'] == "open") {//open is pressed
-		$file = fopen("cache.txt", "r");
-		session_decode(fgets($file, 40000));//open test
-		fclose($file);
-	//}
+	$file = fopen("cache.txt", "r");
+	session_decode(fgets($file, 40000));//open test
+	fclose($file);
 }
+
 ?>
-
-
-
