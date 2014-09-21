@@ -120,16 +120,14 @@ function get_input($data) //get input from text form
      return $data;
 }
 
-function sendMessage($recipient)
-{
-	print_r($mandrill->messages->sendTemplate($name, $template_content, $message));
-}
-
 function  save(){
 	$file = fopen("cache.txt", "w");
 	fputs($file, session_encode());//save test
 	fclose($file);
-	echo "Saved Test</br>";
+
+	$file = fopen("cache.json", "w");
+	fputs($file, json_encode($_SESSION['list']));//save test
+	fclose($file);
 }
 
 function load(){
