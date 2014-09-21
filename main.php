@@ -73,4 +73,8 @@ button {
 
 ?>
 
+
+<div style="margin-top: 10px">
+<iframe style="display:block;margin:auto" src="https://panzi.github.io/Browser-Ponies/ponies-iframe.html#fadeDuration=500&volume=1&fps=25&speed=3&audioEnabled=false&showFps=false&showLoadProgress=true&speakProbability=0.1&spawn.applejack=1&spawn.fluttershy=1&spawn.pinkie%20pie=1&spawn.rainbow%20dash=1&spawn.rarity=1&spawn.twilight%20sparkle=1&paddock=true&grass=true" style="overflow:hidden;border-style:none;margin:0;padding:0;background:transparent;width:640px;480px;" width="640" height="480" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+</div>
 </div>
